@@ -1,0 +1,70 @@
+---
+- hosts: all
+  
+  tasks:
+  # - name: Update and upgrade apt packages
+  #   become: true
+  #   yum:
+  #     upgrade: yes
+  #     update_cache: yes
+  # enable EPEL repo by installing the epel-release package
+
+  - name: install packages
+    become: true
+    yum: name={{item}} state=latest
+    with_items:
+      - python3
+      - python3-pip
+      - python-setuptools
+      - git
+      - nginx
+
+  - name: Pip setup for gunicorn, flask
+    pip:
+      name:
+       - flask
+       - gunicorn
+
+  - name: Clone the git repo
+    git:
+      repo: 'https://github.com/JatinDandelia/flask-app.git'
+      dest: /home/jatin/flaskApp
+      update: yes  # Does a git pull if the repo already exists
+
+  - name: Configure nginx files
+    become: true
+    template:
+      src: /Users/jatin/Ansible Assignment/flaskapp.conf
+      dest: /etc/nginx/conf.d
+
+  - name: nginx restart
+    become: true
+    systemd: name=nginx state=restarted enabled=yes
+
+  
+
+  - name: Copy gunicorn
+    become: true
+    template:
+      src: /Users/jatin/Ansible Assignment/gunicorn.service
+      dest: /etc/systemd/system
+  
+  - name: starting gunicorn
+    become: true
+    command: chdir=/etc/systemd/system ls
+    command: sudo systemctl daemon-reload
+    #command: sudo service gunicorn start
+    #command: sudo systemctl stop gunicorn
+    command: sudo systemctl start gunicorn
+    command: sudo systemctl enable gunicorn
+
+  # - name: Go to flask directory and start gunicorn
+  #   shell: "cd /home/jatin/flaskApp | gunicorn app:app"
+
+  # - name: Gunicorn
+  #   service:
+  #     name: gunicorn
+  #     state: started
+      #cmd: gunicorn app:app
+    # command: gunicorn app:app
+    
