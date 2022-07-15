@@ -6,7 +6,7 @@ After=network.target
 User=jatin
 Group=www-data
 WorkingDirectory=/home/jatin/flaskApp
-ExecStart=.local/lib/python3.7/site-packages/gunicorn --workers 3 --bind unix:flaskapp.sock -m 007 app:app
+ExecStart=.local/lib/python3.7/site-packages/gunicorn --bind 0.0.0.0:5000 wsgi:app
 
 [Install]
 WantedBy=multi-user.target
