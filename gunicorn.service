@@ -1,0 +1,9 @@
+[Unit]
+Description=Gunicorn service
+After=network.target
+
+[Service]
+User=jatin
+Group=www-data
+WorkingDirectory=/home/jatin/flaskApp
+ExecStart=./.local/lib/python3.7/site-packages/gunicorn --bind 0.0.0.0:80 wsgi:app
