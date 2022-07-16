@@ -36,7 +36,6 @@
     template:
       src: /Users/jatin/Ansible Assignment/flaskapp.conf
       dest: /etc/nginx/conf.d
-      update: yes
 
   - name: nginx restart
     become: true
