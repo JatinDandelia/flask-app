@@ -36,6 +36,7 @@
     template:
       src: /Users/jatin/Ansible Assignment/flaskapp.conf
       dest: /etc/nginx/conf.d
+    update: yes
 
   - name: nginx restart
     become: true
@@ -48,6 +49,7 @@
     template:
       src: /Users/jatin/Ansible Assignment/gunicorn.service
       dest: /etc/systemd/system
+    update: yes
   
   - name: starting gunicorn
     become: true
