@@ -60,7 +60,7 @@
     command: sudo systemctl enable gunicorn
 
   - name: Go to flask directory and start gunicorn
-    shell: "cd /home/jatin/flaskApp | gunicorn app:app"
+    shell: "cd /home/jatin/flaskApp | gunicorn --workers=3 app:app"
 
   # - name: Gunicorn
   #   service:
