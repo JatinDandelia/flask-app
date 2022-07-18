@@ -77,7 +77,7 @@
     # shell: cd ~/flaskApp
     # shell: ~/.local/bin/gunicorn app:app
     # shell: /home/jatin/.local/lib/python3.7/site-packages/gunicorn app:app
-    command: ~/.local/bin/gunicorn app:app
+    command: ~/.local/bin/gunicorn app:app 
     args:
       chdir: '~/flaskApp'
   #   service:
