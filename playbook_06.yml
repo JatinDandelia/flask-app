@@ -9,6 +9,12 @@
   #     update_cache: yes
   # enable EPEL repo by installing the epel-release package
 
+
+  # - name: Update and upgrade apt packages
+  #   become: true
+  #   yum:
+  #     update_cache: yes
+
   - name: install packages
     become: true
     yum: name={{item}} state=latest
@@ -19,10 +25,14 @@
       - git
       - nginx
 
-  - name: Pip setup for gunicorn, flask
+  - name: Pip setup for flask
     pip:
       name:
        - flask
+       
+  - name: Pip setup for gunicorn
+    pip:
+      name:
        - gunicorn
 
   - name: Clone the git repo
@@ -43,12 +53,12 @@
 
   
 
-  - name: Copy gunicorn
-    become: true
-    template:
-      src: /Users/jatin/Ansible Assignment/gunicorn.service
-      dest: /etc/systemd/system
-      update: yes
+  # - name: Copy gunicorn
+  #   become: true
+  #   template:
+  #     src: gunicorn.service
+  #     dest: /etc/systemd/system
+  #     update: yes
   
   - name: starting gunicorn
     become: true
@@ -59,13 +69,20 @@
     command: sudo systemctl start gunicorn
     command: sudo systemctl enable gunicorn
 
-  - name: Go to flask directory and start gunicorn
-    shell: "cd /home/jatin/flaskApp | gunicorn --workers=3 app:app"
+  # - name: Go to flask directory and start gunicorn
+  #   shell: "cd /home/jatin/flaskApp | gunicorn --workers=3 app:app"
 
-  # - name: Gunicorn
+  - name: gunicorn run
+    # command: gunicorn flaskApp/app:app
+    # shell: cd ~/flaskApp
+    # shell: ~/.local/bin/gunicorn app:app
+    # shell: /home/jatin/.local/lib/python3.7/site-packages/gunicorn app:app
+    command: ~/.local/bin/gunicorn app:app
+    args:
+      chdir: '~/flaskApp'
   #   service:
   #     name: gunicorn
   #     state: started
       #cmd: gunicorn app:app
-    # command: gunicorn app:app
+    # command: gunicorn app:app    --bind unix:flaskapp.sock -m 007 app:app
     
